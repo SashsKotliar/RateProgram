@@ -8,50 +8,66 @@ public class Main extends BasicWindow {
 
     public static void main(String[] args) {
         Main start = new Main();
+
     }
 
     public Main() {
         super(Constants.MAIN_WINDOW_W,Constants.MAIN_WINDOW_H);
         init();
     }
+
     public void init(){
         this.mainScreen=new PanelMainScreen();
         this.add(mainScreen);
         myBottoms();
-        this.setVisible(true);
+        mainBottomsOption(mainScreen.buttonX(), 450, 150, 100, mainScreen.buttonS(),
+                Color.orange, Color.BLACK, PanelMainScreen::new);
 
+        this.setVisible(true);
     }
+
 
 
     public void myBottoms() {
-        this.mainBottomsOption(Constants.BUTTON1_X, Constants.BUTTON1_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "EUR/USD");
-        this.mainBottomsOption(Constants.BUTTON1_X, Constants.BUTTON2_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "GBP/USD");
-        this.mainBottomsOption(Constants.BUTTON1_X, Constants.BUTTON3_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "USD/RUB");
-        this.mainBottomsOption(Constants.BUTTON4_X, Constants.BUTTON1_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "USD/PLN");
-        this.mainBottomsOption(Constants.BUTTON4_X, Constants.BUTTON2_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "USD/ILS");
-        this.mainBottomsOption(Constants.BUTTON4_X, Constants.BUTTON3_Y, Constants.BUTTON_W, Constants.BUTTON_H,
-                "EUR/JPY");
+       int y = Constants.BUTTON1_Y;
+       int x;
+       for (int i = 0; i < 8; i++){
+           if (i == 6){
+               x = Constants.BUTTON1_X + Constants.BUTTON_W;
+           } else if (i==7){
+               x = Constants.BUTTON1_X + 3*Constants.BUTTON_W/2;
+           } else {
+               x = Constants.BUTTON1_X;
+           }
+           for (int j = 0; j < 6; j++){
+               this.mainBottomsOption(x, y, Constants.BUTTON_W, Constants.BUTTON_H, "$", Color.BLACK,
+                       Color.orange, null);
+               x += Constants.BUTTON_W;
+               if ((i==6&&j==3) || (i==7&&j==2)){
+                   break;
+               }
+           }
+           y += Constants.BUTTON_H;
+       }
     }
 
 
 
-    public void mainBottomsOption(int x, int y, int w, int h, String titleOn/*, Supplier<JFrame> supplier*/) {
-        Button button = new Button(titleOn);
-        button.setFont(Constants.FONT);
+    public void mainBottomsOption(int x, int y, int w, int h, String s, Color foregroundColor,
+                                  Color backgroundColor, Supplier<JPanel> supplier) {
+        Button button = new Button();
+        button.setLabel(s);
+        button.setFont(Constants.FONT1);
         button.setBounds(x, y, w, h);
-        button.setForeground(Color.cyan.darker());
-        button.setBackground(Color.cyan);
+        button.setForeground(foregroundColor);
+        button.setBackground(backgroundColor);
         button.addActionListener(e -> {
-           // JFrame frame = supplier.get();
-            //frame.setVisible(true);
+            JPanel panel = supplier.get();
+            panel.setVisible(true);
             this.setVisible(false);
         });
         this.mainScreen.add(button);
     }
+
 
 }
