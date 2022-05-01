@@ -22,24 +22,4 @@ public class PanelMainScreen extends BasicJPanel {
         title.setBounds(0, Constants.TITLE_Y, Constants.MAIN_WINDOW_W, Constants.TITLE_H);
         this.add(title);
     }
-
-    public int buttonX() {
-        int x;
-        if (this.counter % 2 != 0){
-            x = 800;
-        } else {
-            x = 50;
-        }
-        return x;
-    }
-
-    public String buttonS(){
-        String s;
-        if (this.counter % 2 != 0){
-            s = "NEXT PAGE";
-        } else {
-            s = "PREVIOUS PAGE";
-        }
-        return s;
-    }
 }

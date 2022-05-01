@@ -5,24 +5,48 @@ import java.util.function.Supplier;
 public class Main extends BasicWindow {
 
     private PanelMainScreen mainScreen;
+    private int x;
+    private String s;
 
     public static void main(String[] args) {
         Main start = new Main();
 
     }
 
+    public void setMainScreen(PanelMainScreen mainScreen) {
+        this.mainScreen = mainScreen;
+    }
+
     public Main() {
         super(Constants.MAIN_WINDOW_W,Constants.MAIN_WINDOW_H);
+        this.x = 800;
+        this.s = "NEXT PAGE";
         init();
+    }
+
+    public void setX() {
+       if (this.x == 800){
+           this.x = 50;
+       } else {
+           this.x = 800;
+       }
+    }
+
+    public void setS(){
+        if (this.s.equals("NEXT PAGE")){
+            this.s = "PREVIOUS PAGE";
+        } else {
+            this.s = "NEXT PAGE";
+        }
     }
 
     public void init(){
         this.mainScreen=new PanelMainScreen();
         this.add(mainScreen);
         myBottoms();
-        mainBottomsOption(mainScreen.buttonX(), 450, 150, 100, mainScreen.buttonS(),
-                Color.orange, Color.BLACK, PanelMainScreen::new);
-
+        mainBottomsOption(800, 450, 150, 100, "NEXT PAGE", Color.orange,
+                Color.BLACK, ()-> new BasicJPanel(0,0,Constants.MAIN_WINDOW_W,
+                        Constants.MAIN_WINDOW_H, null));
         this.setVisible(true);
     }
 
@@ -40,8 +64,9 @@ public class Main extends BasicWindow {
                x = Constants.BUTTON1_X;
            }
            for (int j = 0; j < 6; j++){
-               this.mainBottomsOption(x, y, Constants.BUTTON_W, Constants.BUTTON_H, "$", Color.BLACK,
-                       Color.orange, null);
+               this.mainBottomsOption(x, y, Constants.BUTTON_W, Constants.BUTTON_H,
+                       "$", Color.BLACK, Color.orange, ()->new BasicJPanel(0, 0,
+                               Constants.MAIN_WINDOW_W, Constants.MAIN_WINDOW_H, null));
                x += Constants.BUTTON_W;
                if ((i==6&&j==3) || (i==7&&j==2)){
                    break;
@@ -54,7 +79,7 @@ public class Main extends BasicWindow {
 
 
     public void mainBottomsOption(int x, int y, int w, int h, String s, Color foregroundColor,
-                                  Color backgroundColor, Supplier<JPanel> supplier) {
+                                  Color backgroundColor, Supplier<BasicJPanel> supplier) {
         Button button = new Button();
         button.setLabel(s);
         button.setFont(Constants.FONT1);
@@ -62,9 +87,10 @@ public class Main extends BasicWindow {
         button.setForeground(foregroundColor);
         button.setBackground(backgroundColor);
         button.addActionListener(e -> {
-            JPanel panel = supplier.get();
+            BasicJPanel panel = supplier.get();
             panel.setVisible(true);
-            this.setVisible(false);
+            this.add(panel);
+            this.mainScreen.setVisible(false);
         });
         this.mainScreen.add(button);
     }
